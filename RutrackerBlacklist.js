@@ -2,7 +2,7 @@
 // @name         rutracker黑名单
 // @version      0.1
 // @author       assassing
-// @homepage     https://github.com/hxz393/RutrackerBlacklist
+// @namespace    https://github.com/hxz393/RutrackerBlacklist
 // @description  rutracker blacklist
 // @include      https://rutracker.org/*
 // @grant        GM_getValue
@@ -120,7 +120,7 @@
             //取出脚本标题和描述
             let text1 = tr.querySelector("td > .f-name").innerText.trim().toLowerCase();
             let text2 = tr.querySelector("td > .t-title").innerText.trim().toLowerCase();
-            console.log(text2)
+            // console.log(text2)
             for (let j = 0; j < len2; j++) {
                 if (text1.includes(arr[j].trim().toLowerCase())||text2.includes(arr[j].trim().toLowerCase())) {
                     tr.style.display = "none";//隐藏掉黑名单里的脚本
