@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         rutracker黑名单
-// @version      0.1
+// @version      0.2
 // @author       assassing
-// @namespace    https://github.com/hxz393/RutrackerBlacklist
+// @homepage     https://github.com/hxz393/RutrackerBlacklist
 // @description  rutracker blacklist
-// @include      https://rutracker.org/*
+// @match     https://rutracker.org/forum/tracker.php?*
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @run-at document-idle
 // ==/UserScript==
 
 
@@ -23,6 +24,7 @@
         showOnlyBtnValue: "筛选",
         showAllBtnValue: "显示全部",
     };
+
 
     function addKeywordsTextArea(selector) {
         let div = document.createElement("div");
@@ -55,6 +57,8 @@
         div.style.display = "none";
         return div;
     }
+
+
     function addFilterSystem(selector) {
         let div = document.createElement("div");
         let h2 = document.createElement("h2");
@@ -117,16 +121,28 @@
         for (let i = 0; i < len; i++) {
             let tr = node_lis[i];
             if (!tr.querySelector("td > div > a")) { continue; }
+			// console.log(tr)
             //取出脚本标题和描述
             let text1 = tr.querySelector("td > .f-name").innerText.trim().toLowerCase();
+            // console.log(text1)
             let text2 = tr.querySelector("td > .t-title").innerText.trim().toLowerCase();
-            // console.log(text2)
-            for (let j = 0; j < len2; j++) {
-                if (text1.includes(arr[j].trim().toLowerCase())||text2.includes(arr[j].trim().toLowerCase())) {
-                    tr.style.display = "none";//隐藏掉黑名单里的脚本
-                    break;
-                }
-            }
+            console.log(text2)
+            setTimeout(() => {
+			    if (!text1) {
+                    // alert("刷新页面");
+			        window.location.reload();
+		     	    // alert("载入失败");
+		       	    // hideScriptsByKeywords(selector)
+	    	    }
+                else {
+                    for (let j = 0; j < len2; j++) {
+                        if (text1.includes(arr[j].trim().toLowerCase())||text2.includes(arr[j].trim().toLowerCase())) {
+                            tr.style.display = "none";//隐藏掉黑名单里的脚本
+                            break;
+                        }
+                    }
+			    }
+            }, 1000)
         }
     }
 
@@ -134,5 +150,8 @@
     if (document.querySelector("#search-results")) {
         addFilterSystem("#search-results");
         hideScriptsByKeywords("#search-results");
+    }
+    else {
+        alert("载入失败");
     }
 })();
